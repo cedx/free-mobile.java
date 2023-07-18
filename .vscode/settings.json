@@ -1,0 +1,19 @@
+{
+	"editor.insertSpaces": false,
+	"editor.tabSize": 2,
+	"files.encoding": "utf8",
+	"files.insertFinalNewline": true,
+	"files.trimTrailingWhitespace": true,
+	"java.project.outputPath": "bin",
+	"java.project.referencedLibraries": ["lib/**/*.jar"],
+	"java.project.sourcePaths": ["src", "test"],
+	"[markdown]": {"files.trimTrailingWhitespace": false},
+	"[yaml]": {"editor.insertSpaces": true},
+	"rest-client.environmentVariables": {
+		"dev": {
+			"account": "FREEMOBILE_ACCOUNT",
+			"apiKey": "FREEMOBILE_API_KEY",
+			"baseUrl": "https://smsapi.free-mobile.fr"
+		}
+	}
+}
