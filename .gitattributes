@@ -1,0 +1,24 @@
+* text=auto
+.* text
+
+*.css text diff=css
+*.html text diff=html
+*.http text
+*.hx text
+*.hxml text
+*.info text
+*.java text diff=java
+*.json text
+*.md text diff=markdown
+*.svg text
+*.txt text
+*.xml text
+*.yaml text
+*.yml text
+
+*.ico binary
+*.jpg binary
+*.pdf binary
+*.png binary
+*.webp binary
+*.woff2 binary
