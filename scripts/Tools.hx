@@ -15,6 +15,10 @@ function removeDirectory(directory: String) {
 	FileSystem.deleteDirectory(directory);
 }
 
+/** Replaces in the specified `file` the substring which the `pattern` matches with the given `replacement`. **/
+function replaceInFile(file: String, pattern: EReg, replacement: String)
+	File.saveContent(file, pattern.replace(File.getContent(file), replacement));
+
 /** Sets the Java class path. **/
 function setClassPath() {
 	final paths = (FileSystem.exists("bin") ? ["bin"] : []).concat([File.getContent(".classpath").rtrim()]);
