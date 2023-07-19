@@ -5,17 +5,6 @@
 			Send SMS messages to your Free Mobile account.
 		</description>
 	</info>
-	<!--
-	<configurations defaultconfmapping="default">
-		<conf name="compile"/>
-		<conf name="runtime" extends="compile"/>
-		<conf name="test" extends="runtime" visibility="private"/>
-	</configurations>
-	<dependencies defaultconf="runtime">
-		<dependency org="org.jacoco" name="org.jacoco.cli" rev="0.8.10" conf="test"/>
-		<dependency org="org.junit.platform" name="junit-platform-console-standalone" rev="1.9.3" conf="test"/>
-	</dependencies>
-	-->
 	<dependencies>
 		<dependency org="org.jacoco" name="org.jacoco.cli" rev="0.8.10"/>
 		<dependency org="org.junit.platform" name="junit-platform-console-standalone" rev="1.9.3"/>
