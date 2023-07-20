@@ -55,7 +55,6 @@ private function generateCoverageReport(execFile: String, classDirectory: String
 	Sys.command("java", ["org.jacoco.cli.internal.Main", "report",
 		execFile,
 		'--classfiles=$classDirectory',
-		"--html=var/coverage", // TODO useless
 		"--sourcefiles=src",
 		"--xml=var/coverage.xml"
 	]);
