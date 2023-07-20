@@ -1,5 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ivy-module version="2.0">
+<?xml version="1.0"?>
+<ivy-module version="2.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="https://ant.apache.org/ivy/schemas/ivy.xsd">
+
 	<info organisation="io.belin" module="free-mobile" revision="0.1.0">
 		<description homepage="https://docs.belin.io/free-mobile.java">
 			Send SMS messages to your Free Mobile account.

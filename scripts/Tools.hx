@@ -20,7 +20,7 @@ function replaceInFile(file: String, pattern: EReg, replacement: String)
 	File.saveContent(file, pattern.replace(File.getContent(file), replacement));
 
 /** Sets the Java class path. **/
-function setClassPath() {
-	final paths = (FileSystem.exists("bin") ? ["bin"] : []).concat([File.getContent(".classpath").rtrim()]);
+function setClassPath(output = "bin") {
+	final paths = (FileSystem.exists(output) ? [output] : []).concat([File.getContent(".classpath").rtrim()]);
 	Sys.putEnv("CLASSPATH", paths.join(Sys.systemName() == "Windows" ? ";" : ":"));
 }
