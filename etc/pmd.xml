@@ -111,7 +111,6 @@
 	<rule ref="category/java/design.xml/AvoidThrowingRawExceptionTypes"/>
 	<rule ref="category/java/design.xml/AvoidUncheckedExceptionsInSignatures"/>
 	<rule ref="category/java/design.xml/ClassWithOnlyPrivateConstructorsShouldBeFinal"/>
-	<!-- TODO -->
 	<rule ref="category/java/design.xml/CognitiveComplexity"/>
 	<rule ref="category/java/design.xml/CollapsibleIfStatements"/>
 	<rule ref="category/java/design.xml/CouplingBetweenObjects"/>
@@ -137,7 +136,6 @@
 			<property name="methodReportLevel" value="100"/>
 		</properties>
 	</rule>
-	<!-- TODO -->
 	<rule ref="category/java/design.xml/NPathComplexity"/>
 	<rule ref="category/java/design.xml/SignatureDeclareThrowsException"/>
 	<rule ref="category/java/design.xml/SimplifiedTernary"/>

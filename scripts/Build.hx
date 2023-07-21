@@ -4,5 +4,5 @@ using StringTools;
 function main() {
 	final debug = Sys.args().contains("--debug");
 	Tools.setClassPath();
-	Sys.command('javac -d lib ${debug ? "-g -Xlint:all,-path,-processing" : ""} src/${Tools.javaPackage.replace(".", "/")}/*.java');
+	Sys.command('javac -d bin ${debug ? "-g -Xlint:all,-path,-processing" : ""} src/${Tools.javaPackage.replace(".", "/")}/*.java');
 }

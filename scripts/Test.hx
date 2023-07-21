@@ -12,7 +12,7 @@ function main() {
 	final pkgPath = Tools.javaPackage.replace(".", "/");
 	Sys.command("lix Build --debug");
 	Tools.setClassPath();
-	Sys.command('javac -d lib -g -Xlint:all,-path,-processing test/$pkgPath/*.java');
+	Sys.command('javac -d bin -g -Xlint:all,-path,-processing test/$pkgPath/*.java');
 
 	final jacocoJar = "jacocoagent.jar";
 	extractJacocoJar(jacocoJar, "var");
@@ -25,7 +25,7 @@ function main() {
 	]);
 
 	if (exitCode != 0) Sys.exit(exitCode);
-	generateCoverageReport(jacocoExec, 'lib/$pkgPath');
+	generateCoverageReport(jacocoExec, 'bin/$pkgPath');
 }
 
 /** Extracts the JAR of the JaCoCo Agent into the specified output directory. **/
@@ -35,10 +35,7 @@ private function extractJacocoJar(jarName: String, outputDirectory: String) {
 
 	final dependencies = new Access(Xml.parse(File.getContent("ivy.xml")).firstElement()).node.dependencies.nodes.dependency;
 	final version = dependencies.filter(dependency -> dependency.att.name == "org.jacoco.agent").pop().att.rev;
-	final input = File.read(Path.join([
-		Sys.getEnv(Sys.systemName() == "Windows" ? "USERPROFILE" : "HOME"),
-		'.ivy2/cache/org.jacoco/org.jacoco.agent/jars/org.jacoco.agent-$version.jar'
-	]));
+	final input = File.read('lib/org.jacoco/org.jacoco.agent/jars/org.jacoco.agent-$version.jar');
 
 	final entry = Reader.readZip(input).filter(entry -> entry.fileName == jarName).pop();
 	if (entry.compressed) entry.uncompress();
