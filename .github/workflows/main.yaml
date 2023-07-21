@@ -33,7 +33,7 @@ jobs:
           restore-keys: java-${{runner.os}}-ivy-
       - name: Install dependencies
         run: |
-          lix install
+          lix download
           java -jar var/ivy-2.5.1.jar -cache lib -cachepath .classpath
       - name: Run tests
         run: lix Test
