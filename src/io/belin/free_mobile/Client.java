@@ -55,6 +55,7 @@ public final class Client {
 	/**
 	 * Sends a SMS message to the underlying account.
 	 * @param text The message text.
+	 * @throws ClientException An error occurred while sending the message.
 	 */
 	public void sendMessage(String text) throws ClientException {
 		try {
@@ -74,7 +75,7 @@ public final class Client {
 
 	/*
 	public CompletableFuture<Void> sendMessageAsync(String text) {
-
+		// TODO
 	}*/
 
 	/**

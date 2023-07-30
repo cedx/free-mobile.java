@@ -30,7 +30,7 @@ public class ClientException extends Exception {
 	/**
 	 * Creates a new client exception.
 	 * @param message The error message.
-	 * @param cause The original cause of the error.
+	 * @param response The HTTP response causing the error.
 	 */
 	public ClientException(String message, HttpResponse<Void> response) {
 		super(message);
