@@ -1,5 +1,6 @@
 package io.belin.free_mobile;
 
+import java.io.Serial;
 import java.net.http.HttpResponse;
 
 /**
@@ -10,7 +11,7 @@ public class ClientException extends Exception {
 	/**
 	 * The serialization version number.
 	 */
-	private static final long serialVersionUID = 1L;
+	@Serial private static final long serialVersionUID = 1L;
 
 	/**
 	 * The optional HTTP response causing the error.
