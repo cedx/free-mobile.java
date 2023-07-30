@@ -14,7 +14,7 @@ public class ClientException extends Exception {
 	@Serial private static final long serialVersionUID = 1L;
 
 	/**
-	 * The optional HTTP response causing the error.
+	 * The optional HTTP response that caused the error.
 	 */
 	public final HttpResponse<Void> response;
 
@@ -23,15 +23,15 @@ public class ClientException extends Exception {
 	 * @param message The error message.
 	 * @param cause The original cause of the error.
 	 */
-	public ClientException(String message, Throwable cause) {
-		super(message, cause);
+	public ClientException(Throwable cause) {
+		super(cause);
 		this.response = null;
 	}
 
 	/**
 	 * Creates a new client exception.
 	 * @param message The error message.
-	 * @param response The HTTP response causing the error.
+	 * @param response The HTTP response that caused the error.
 	 */
 	public ClientException(String message, HttpResponse<Void> response) {
 		super(message);

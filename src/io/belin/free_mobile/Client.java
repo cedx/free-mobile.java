@@ -9,6 +9,7 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 /**
@@ -66,15 +67,27 @@ public final class Client {
 				default -> throw new ClientException("An error occurred while sending the message.", response);
 			}
 		}
-		catch (IOException|InterruptedException e) {
-			throw new ClientException("An error occurred while sending the message.", e);
+		catch (InterruptedException|IOException e) {
+			throw new ClientException(e);
 		}
 	}
 
-	/*
+	/**
+	 * Asynchronously sends a SMS message to the underlying account.
+	 * @param text The message text.
+	 * @return Completes when the message has been sent.
+	 */
+	@SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
 	public CompletableFuture<Void> sendMessageAsync(String text) {
-		// TODO
-	}*/
+		return HttpClient.newHttpClient().sendAsync(createRequest(text), BodyHandlers.discarding()).handle((response, e) -> {
+			if (e != null) throw new RuntimeException(new ClientException(e));
+			return switch (response.statusCode() / 100) {
+				case 2 -> null;
+				case 4 -> throw new RuntimeException(new ClientException("The provided credentials are invalid.", response));
+				default -> throw new RuntimeException(new ClientException("An error occurred while sending the message.", response));
+			};
+		});
+	}
 
 	/**
 	 * Creates the HTTP request corresponding to the specified message.
@@ -89,9 +102,10 @@ public final class Client {
 		query.put("pass", apiKey);
 		query.put("user", account);
 
+		var charset = Charset.defaultCharset();
 		var url = baseUrl.resolve("sendmsg?" + query.entrySet()
 			.stream()
-			.map(entry -> entry.getKey() + "=" + URLEncoder.encode(entry.getValue(), Charset.defaultCharset()))
+			.map(entry -> URLEncoder.encode(entry.getKey(), charset) + "=" + URLEncoder.encode(entry.getValue(), charset))
 			.collect(Collectors.joining("&")));
 
 		return HttpRequest.newBuilder(url).GET().build();
