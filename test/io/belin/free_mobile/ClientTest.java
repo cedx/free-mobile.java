@@ -1,36 +1,34 @@
 package io.belin.free_mobile;
 
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\{Test, TestDox};
-use Psr\Http\Client\ClientExceptionInterface;
-use function PHPUnit\Framework\{assertThat, isNull};
+import static org.junit.jupiter.api.Assertions.*;
+import java.net.URI;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 /**
- * Tests the features of the {@see Client} class.
+ * Tests the features of the {@link Client} class.
  */
-#[TestDox("Client")]
-final class ClientTest extends TestCase {
+@DisplayName("Client")
+final class ClientTest {
 
-	#[Test]
-	#[TestDox("sendMessage(): should throw a `ClientExceptionInterface` if a network error occurred.")]
-	function networkError(): void {
-		$this->expectException(ClientExceptionInterface::class);
-		$client = new Client("anonymous", "secret", baseUrl: "http://localhost:10000/");
-		$client->sendMessage("Hello World!");
+	@Test
+	@DisplayName("sendMessage(): should throw a `ClientExceptionInterface` if a network error occurred.")
+	void networkError() {
+		var client = new Client("anonymous", "secret", URI.create("http://localhost:10000/"));
+		assertThrows(ClientException.class, () -> client.sendMessage("Hello World!"));
 	}
 
-	#[Test]
-	#[TestDox("sendMessage(): should throw a `ClientExceptionInterface` if the credentials are invalid.")]
-	function invalidCredentials(): void {
-		$this->expectException(ClientExceptionInterface::class);
-		$client = new Client("anonymous", "secret");
-		$client->sendMessage("Hello World!");
+	@Test
+	@DisplayName("sendMessage(): should throw a `ClientExceptionInterface` if the credentials are invalid.")
+	void invalidCredentials() {
+		var client = new Client("anonymous", "secret");
+		assertThrows(ClientException.class, () -> client.sendMessage("Hello World!"));
 	}
 
-	#[Test]
-	#[TestDox("sendMessage(): should send SMS messages if the credentials are valid.")]
-	function validCredentials(): void {
-		$client = new Client(getenv("FREEMOBILE_ACCOUNT") ?: "", getenv("FREEMOBILE_API_KEY") ?: "");
-		assertThat($client->sendMessage("Hello Cédric, from PHP!"), isNull()); // @phpstan-ignore-line
+	@Test
+	@DisplayName("sendMessage(): should send SMS messages if the credentials are valid.")
+	void validCredentials() {
+		var client = new Client(System.getenv("FREEMOBILE_ACCOUNT"), System.getenv("FREEMOBILE_API_KEY"));
+		assertDoesNotThrow(() -> client.sendMessage("Hello Cédric, from Java!"));
 	}
 }

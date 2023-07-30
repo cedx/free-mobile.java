@@ -1,7 +1,14 @@
 package io.belin.free_mobile;
 
-use Nyholm\Psr7\Uri;
-use Psr\Http\Message\UriInterface;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse.BodyHandlers;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Sends messages by SMS to a Free Mobile account.
@@ -11,17 +18,26 @@ final class Client {
 	/**
 	 * The Free Mobile account.
 	 */
-	readonly string $account;
+	public final String account;
 
 	/**
 	 * The Free Mobile API key.
 	 */
-	readonly string $apiKey;
+	public final String apiKey;
 
 	/**
 	 * The base URL of the remote API endpoint.
 	 */
-	readonly UriInterface $baseUrl;
+	public final URI baseUrl;
+
+	/**
+	 * Creates a new client.
+	 * @param account The Free Mobile account.
+	 * @param apiKey The Free Mobile API key.
+	 */
+	public Client(String account, String apiKey) {
+		this(account, apiKey, null);
+	}
 
 	/**
 	 * Creates a new client.
@@ -29,31 +45,50 @@ final class Client {
 	 * @param apiKey The Free Mobile API key.
 	 * @param baseUrl The base URL of the remote API endpoint.
 	 */
-	function __construct(string $account, string $apiKey, string $baseUrl = "https://smsapi.free-mobile.fr/") {
-		$this->account = $account;
-		$this->apiKey = $apiKey;
-		$this->baseUrl = new Uri($baseUrl);
+	public Client(String account, String apiKey, URI baseUrl) {
+		this.account = account;
+		this.apiKey = apiKey;
+		this.baseUrl = Objects.requireNonNullElse(baseUrl, URI.create("https://smsapi.free-mobile.fr/"));
 	}
 
 	/**
 	 * Sends a SMS message to the underlying account.
 	 * @param text The message text.
-	 * @throws \Psr\Http\Client\ClientExceptionInterface An error occurred while sending the message.
 	 */
-	function sendMessage(string $text): void {
-		$handle = curl_init((string) $this->baseUrl->withPath("{$this->baseUrl->getPath()}sendmsg")->withQuery(http_build_query([
-			"msg" => mb_substr(trim($text), 0, 160),
-			"pass" => $this->apiKey,
-			"user" => $this->account
-		], arg_separator: "&", encoding_type: PHP_QUERY_RFC3986)));
-
-		if (!$handle) throw new ClientException("Unable to allocate the cURL handle.", 500);
-		if (!curl_exec($handle)) throw new ClientException("An error occurred while sending the message.", 500);
-
-		$code = intdiv($status = curl_getinfo($handle, CURLINFO_RESPONSE_CODE), 100);
-		if ($code != 2) {
-			$message = $code == 4 ? "The provided credentials are invalid." : "An error occurred while sending the message.";
-			throw new ClientException($message, $status);
+	public void sendMessage(String text) throws ClientException {
+		try {
+			var status = (HttpClient.newHttpClient().send(createRequest(text), BodyHandlers.discarding()).statusCode()) / 100;
+			if (status != 2) switch (status) {
+				case 4 -> throw new ClientException("The provided credentials are invalid.");
+				default -> throw new ClientException("An error occurred while sending the message.");
+			}
 		}
+		catch (Exception e) {
+			throw new ClientException("An error occurred while sending the message.", e);
+		}
+	}
+
+	/*
+	public CompletableFuture<Void> sendMessageAsync(String text) {
+
+	}*/
+
+	/**
+	 * Creates the HTTP request corresponding to the specified message.
+	 * @param text The message text.
+	 * @return The newly created HTTP request.
+	 */
+	private HttpRequest createRequest(String text) {
+		var query = new HashMap<String, String>();
+		query.put("msg", text.strip().substring(0, 160));
+		query.put("pass", apiKey);
+		query.put("user", account);
+
+		var url = baseUrl.resolve("sendmsg?" + query.entrySet()
+			.stream()
+			.map(entry -> entry.getKey() + "=" + URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8))
+			.collect(Collectors.joining("&")));
+
+		return HttpRequest.newBuilder(url).GET().build();
 	}
 }
