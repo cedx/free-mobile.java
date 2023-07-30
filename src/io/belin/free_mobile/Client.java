@@ -6,7 +6,7 @@ import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse.BodyHandlers;
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -61,8 +61,6 @@ public final class Client {
 		try {
 			var response = HttpClient.newHttpClient().send(createRequest(text), BodyHandlers.discarding());
 			var status = response.statusCode() / 100;
-
-
 			if (status != 2) switch (status) {
 				case 4 -> throw new ClientException("The provided credentials are invalid.", response);
 				default -> throw new ClientException("An error occurred while sending the message.", response);
@@ -93,7 +91,7 @@ public final class Client {
 
 		var url = baseUrl.resolve("sendmsg?" + query.entrySet()
 			.stream()
-			.map(entry -> entry.getKey() + "=" + URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8))
+			.map(entry -> entry.getKey() + "=" + URLEncoder.encode(entry.getValue(), Charset.defaultCharset()))
 			.collect(Collectors.joining("&")));
 
 		return HttpRequest.newBuilder(url).GET().build();
