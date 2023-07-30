@@ -92,7 +92,7 @@ public final class Client {
 
 		var url = baseUrl.resolve("sendmsg?" + query.entrySet()
 			.stream()
-			.map(entry -> entry.getKey() + "=" + URLEncoder.encode(entry.getValue(), StandardCharsets.ISO_8859_1))
+			.map(entry -> entry.getKey() + "=" + URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8))
 			.collect(Collectors.joining("&")));
 
 		return HttpRequest.newBuilder(url).GET().build();
