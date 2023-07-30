@@ -6,37 +6,25 @@ jobs:
     steps:
       - name: Fetch sources
         uses: actions/checkout@v3
-      - name: Set up Lix
-        uses: lix-pm/setup-lix@master
       - name: Set up Java
         uses: actions/setup-java@v3
         with:
           distribution: temurin
           java-version: 17
-      - name: Set up Ivy
-        run: |
-          wget https://dlcdn.apache.org/ant/ivy/2.5.1/apache-ivy-2.5.1-bin-with-deps.tar.gz
-          tar --directory=var --extract --file=apache-ivy-2.5.1-bin-with-deps.tar.gz --strip-components=1
-      - name: Cache Haxe dependencies
-        uses: actions/cache@v3
+      - name: Set up Ant
+        uses: cedx/setup-ant@main
         with:
-          path: |
-            ~/haxe
-            ~/AppData/Roaming/haxe
-          key: haxe-${{runner.os}}-lix-${{hashFiles('.haxerc', 'haxe_libraries/*.hxml')}}
-          restore-keys: haxe-${{runner.os}}-lix-
-      - name: Cache Java dependencies
+          optional-tasks: true
+      - name: Cache dependencies
         uses: actions/cache@v3
         with:
           path: lib
           key: java-${{runner.os}}-ivy-${{hashFiles('ivy.xml')}}
           restore-keys: java-${{runner.os}}-ivy-
       - name: Install dependencies
-        run: |
-          lix download
-          java -jar var/ivy-2.5.1.jar -cache lib -cachepath .classpath
+        run: ant install
       - name: Run tests
-        run: lix Test
+        run: ant -emacs test
       - name: Collect code coverage
         if: success()
         uses: codecov/codecov-action@v3
