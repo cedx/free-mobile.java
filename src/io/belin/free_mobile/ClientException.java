@@ -20,7 +20,6 @@ public class ClientException extends Exception {
 
 	/**
 	 * Creates a new client exception.
-	 * @param message The error message.
 	 * @param cause The original cause of the error.
 	 */
 	public ClientException(Throwable cause) {
