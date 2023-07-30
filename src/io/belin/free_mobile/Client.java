@@ -83,14 +83,16 @@ public final class Client {
 	 * @return The newly created HTTP request.
 	 */
 	private HttpRequest createRequest(String text) {
+		var strippedText = text.strip();
+
 		var query = new HashMap<String, String>();
-		query.put("msg", text.strip().substring(0, 160));
+		query.put("msg", strippedText.substring(0, Math.min(160, strippedText.length())));
 		query.put("pass", apiKey);
 		query.put("user", account);
 
 		var url = baseUrl.resolve("sendmsg?" + query.entrySet()
 			.stream()
-			.map(entry -> entry.getKey() + "=" + URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8))
+			.map(entry -> entry.getKey() + "=" + URLEncoder.encode(entry.getValue(), StandardCharsets.ISO_8859_1))
 			.collect(Collectors.joining("&")));
 
 		return HttpRequest.newBuilder(url).GET().build();
