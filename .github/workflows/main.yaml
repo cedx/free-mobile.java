@@ -12,7 +12,7 @@ jobs:
           distribution: temurin
           java-version: 17
       - name: Set up Ant
-        uses: cedx/setup-ant@main
+        uses: cedx/setup-ant@v1
         with:
           optional-tasks: true
       - name: Cache dependencies
