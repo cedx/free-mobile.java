@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<project name="free_mobile" default="build" xmlns:ivy="antlib:org.apache.ivy.ant">
+	<xmlproperty file="ivy.xml"/>
+	<property name="project.title" value="Free Mobile for Java"/>
+	<property name="project.version" value="${ivy-module.info(revision)}"/>
+	<property name="vendor.id" value="io.belin"/>
+	<property name="vendor.name" value="Cédric Belin"/>
+
+	<description>${project.title} ${project.version}</description>
+
+	<path id="project.classpath">
+		<pathelement location="bin"/>
+		<fileset dir="lib" excludes="*-javadoc.jar,*-sources.jar" includes="*.jar"/>
+	</path>
+
+	<target name="build" description="Builds the project.">
+		<mkdir dir="bin"/>
+		<javac srcDir="src" destDir="bin" classPathRef="project.classpath" includeAntRuntime="false">
+			<compilerarg value="-Xlint:all,-path,-processing"/>
+		</javac>
+	</target>
+
+	<target name="clean" description="Deletes all generated files.">
+		<delete dir="bin"/>
+		<delete includeEmptyDirs="true">
+			<fileset dir="var" excludes=".gitkeep"/>
+		</delete>
+	</target>
+
+	<target name="dist" description="Packages the project." depends="clean,build,version">
+		<mkdir dir="bin/META-INF"/>
+		<copy file="LICENSE.md" toDir="bin/META-INF"/>
+		<jar baseDir="bin" destFile="bin/${ant.project.name}.jar">
+			<manifest>
+				<attribute name="Implementation-Title" value="${project.title}"/>
+				<attribute name="Implementation-Vendor" value="${vendor.name}"/>
+				<attribute name="Implementation-Vendor-Id" value="${vendor.id}"/>
+				<attribute name="Implementation-Version" value="${project.version}"/>
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="doc" description="Builds the documentation.">
+		<copy file="CHANGELOG.md" toFile="docs/changelog.md"/>
+		<copy file="LICENSE.md" toFile="docs/license.md"/>
+		<delete dir="docs/api"/>
+		<javadoc sourcePath="src" destDir="docs/api" packageNames="${vendor.id}.*" windowTitle="${project.title}"/>
+		<copy file="docs/favicon.ico" toDir="docs/api"/>
+	</target>
+
+	<target name="install" description="Installs the project dependencies.">
+		<mkdir dir="lib"/>
+		<ivy:retrieve log="download-only" sync="true"/>
+	</target>
+
+	<target name="lint" description="Performs the static analysis of source code." depends="build">
+		<taskdef name="cpd" className="net.sourceforge.pmd.ant.CPDTask" classPathRef="project.classpath"/>
+		<cpd minimumTokenCount="100">
+			<fileset dir="src"/>
+			<fileset dir="test"/>
+		</cpd>
+		<java className="net.sourceforge.pmd.cli.PmdCli" classPathRef="project.classpath" failOnError="true" fork="true">
+			<arg line="check --cache=var/pmd.cache --dir=example,src,test --no-progress --rulesets=etc/pmd.xml"/>
+		</java>
+	</target>
+
+	<target name="outdated" description="Checks whether installed packages are out of date.">
+		<ivy:checkdepsupdate log="quiet"/>
+	</target>
+
+	<target name="publish" description="Publishes the package." depends="dist">
+		<exec executable="git">
+			<arg line="tag v${project.version}"/>
+		</exec>
+		<exec executable="git">
+			<arg line="push origin v${project.version}"/>
+		</exec>
+	</target>
+
+	<target name="run" description="Runs a main class from the &quot;example&quot; folder.">
+		<fail message="You must specify an example to run using -D:class=&lt;example&gt;." unless="class"/>
+		<java sourceFile="example/${class}.java" classPathRef="project.classpath" failOnError="true" fork="true"/>
+	</target>
+
+	<target name="test" description="Runs the test suite." depends="build">
+		<javac srcDir="test" destDir="bin" classPathRef="project.classpath" includeAntRuntime="false">
+			<compilerarg value="-Xlint:all,-path,-processing"/>
+		</javac>
+		<taskdef name="coverage" className="org.jacoco.ant.CoverageTask" classPathRef="project.classpath"/>
+		<coverage destFile="var/jacoco.exec" append="false" includes="${vendor.id}.*">
+			<java className="org.junit.platform.console.ConsoleLauncher" classPathRef="project.classpath" failOnError="true" fork="true">
+				<arg line="--select-package=${vendor.id}.${ant.project.name}"/>
+			</java>
+		</coverage>
+		<delete includeEmptyDirs="true">
+			<fileset dir="bin" includes="**/*Test.class"/>
+		</delete>
+		<java className="org.jacoco.cli.internal.Main" classPathRef="project.classpath" failOnError="true" fork="true">
+			<arg line="report var/jacoco.exec --classfiles=bin --sourcefiles=src --xml=var/coverage.xml"/>
+		</java>
+	</target>
+
+	<target name="version" description="Updates the version number in the sources.">
+		<replaceregexp file="README.md" match="project/v\d+(\.\d+){2}" replace="project/v${project.version}"/>
+	</target>
+</project>
