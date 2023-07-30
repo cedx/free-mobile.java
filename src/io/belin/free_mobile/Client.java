@@ -1,5 +1,6 @@
 package io.belin.free_mobile;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
 /**
  * Sends messages by SMS to a Free Mobile account.
  */
-final class Client {
+public final class Client {
 
 	/**
 	 * The Free Mobile account.
@@ -57,13 +58,16 @@ final class Client {
 	 */
 	public void sendMessage(String text) throws ClientException {
 		try {
-			var status = (HttpClient.newHttpClient().send(createRequest(text), BodyHandlers.discarding()).statusCode()) / 100;
+			var response = HttpClient.newHttpClient().send(createRequest(text), BodyHandlers.discarding());
+			var status = response.statusCode() / 100;
+
+
 			if (status != 2) switch (status) {
-				case 4 -> throw new ClientException("The provided credentials are invalid.");
-				default -> throw new ClientException("An error occurred while sending the message.");
+				case 4 -> throw new ClientException("The provided credentials are invalid.", response);
+				default -> throw new ClientException("An error occurred while sending the message.", response);
 			}
 		}
-		catch (Exception e) {
+		catch (IOException|InterruptedException e) {
 			throw new ClientException("An error occurred while sending the message.", e);
 		}
 	}
