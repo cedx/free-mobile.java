@@ -14,28 +14,28 @@ import org.junit.jupiter.api.Test;
 final class ClientTest {
 
 	@Test
-	@DisplayName("sendMessage(): should throw a `ClientException` if a network error occurred.")
+	@DisplayName("sendMessage(): should throw a `Client.Exception` if a network error occurred.")
 	void networkError() {
 		var client = new Client("anonymous", "secret", URI.create("http://localhost:10000/"));
-		assertThrows(ClientException.class, () -> client.sendMessage("Hello World!"));
+		assertThrows(Client.Exception.class, () -> client.sendMessage("Hello World!"));
 	}
 
 	@Test
-	@DisplayName("sendMessageAsync(): should complete exceptionnaly with a `ClientException` if a network error occurred.")
+	@DisplayName("sendMessageAsync(): should complete exceptionnaly with a `Client.Exception` if a network error occurred.")
 	void networkErrorAsync() {
 		var client = new Client("anonymous", "secret", URI.create("http://localhost:10000/"));
 		assertThrows(ExecutionException.class, () -> client.sendMessageAsync("Hello World!").get());
 	}
 
 	@Test
-	@DisplayName("sendMessage(): should throw a `ClientException` if the credentials are invalid.")
+	@DisplayName("sendMessage(): should throw a `Client.Exception` if the credentials are invalid.")
 	void invalidCredentials() {
 		var client = new Client("anonymous", "secret");
-		assertThrows(ClientException.class, () -> client.sendMessage("Hello World!"));
+		assertThrows(Client.Exception.class, () -> client.sendMessage("Hello World!"));
 	}
 
 	@Test
-	@DisplayName("sendMessageAsync(): should complete exceptionnaly with a `ClientException` if the credentials are invalid.")
+	@DisplayName("sendMessageAsync(): should complete exceptionnaly with a `Client.Exception` if the credentials are invalid.")
 	void invalidCredentialsAsync() {
 		var client = new Client("anonymous", "secret");
 		assertThrows(ExecutionException.class, () -> client.sendMessageAsync("Hello World!").get());
