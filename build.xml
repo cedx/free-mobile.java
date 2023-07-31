@@ -93,7 +93,7 @@
 			</java>
 		</coverage>
 		<delete includeEmptyDirs="true">
-			<fileset dir="bin" includes="**/*Test.class"/>
+			<fileset dir="bin" includes="*.jar,**/*Test.class"/>
 		</delete>
 		<java className="org.jacoco.cli.internal.Main" classPathRef="project.classpath" failOnError="true" fork="true">
 			<arg line="report var/jacoco.exec --classfiles=bin --sourcefiles=src --xml=var/coverage.xml"/>
