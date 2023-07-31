@@ -1,7 +1,6 @@
 package io.belin.free_mobile;
 
 import java.io.Serial;
-import java.net.http.HttpResponse;
 
 /**
  * An exception caused by an error in a {@link Client} request.
@@ -14,9 +13,12 @@ public class ClientException extends Exception {
 	@Serial private static final long serialVersionUID = 1L;
 
 	/**
-	 * The optional HTTP response that caused the error.
+	 * Creates a new client exception.
+	 * @param message The error message.
 	 */
-	public final HttpResponse<Void> response;
+	public ClientException(String message) {
+		super(message);
+	}
 
 	/**
 	 * Creates a new client exception.
@@ -24,16 +26,5 @@ public class ClientException extends Exception {
 	 */
 	public ClientException(Throwable cause) {
 		super(cause);
-		this.response = null;
-	}
-
-	/**
-	 * Creates a new client exception.
-	 * @param message The error message.
-	 * @param response The HTTP response that caused the error.
-	 */
-	public ClientException(String message, HttpResponse<Void> response) {
-		super(message);
-		this.response = response;
 	}
 }

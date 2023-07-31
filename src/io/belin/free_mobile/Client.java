@@ -63,8 +63,8 @@ public final class Client {
 			var response = HttpClient.newHttpClient().send(createRequest(text), BodyHandlers.discarding());
 			var status = response.statusCode() / 100;
 			if (status != 2) switch (status) {
-				case 4 -> throw new ClientException("The provided credentials are invalid.", response);
-				default -> throw new ClientException("An error occurred while sending the message.", response);
+				case 4 -> throw new ClientException("The provided credentials are invalid.");
+				default -> throw new ClientException("An error occurred while sending the message.");
 			}
 		}
 		catch (InterruptedException|IOException e) {
@@ -83,8 +83,8 @@ public final class Client {
 			if (e != null) throw new RuntimeException(new ClientException(e));
 			return switch (response.statusCode() / 100) {
 				case 2 -> null;
-				case 4 -> throw new RuntimeException(new ClientException("The provided credentials are invalid.", response));
-				default -> throw new RuntimeException(new ClientException("An error occurred while sending the message.", response));
+				case 4 -> throw new RuntimeException(new ClientException("The provided credentials are invalid."));
+				default -> throw new RuntimeException(new ClientException("An error occurred while sending the message."));
 			};
 		});
 	}
