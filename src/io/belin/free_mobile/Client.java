@@ -1,6 +1,7 @@
 package io.belin.free_mobile;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
@@ -56,19 +57,19 @@ public final class Client {
 	/**
 	 * Sends a SMS message to the underlying account.
 	 * @param text The message text.
-	 * @throws ClientException An error occurred while sending the message.
+	 * @throws Exception An error occurred while sending the message.
 	 */
-	public void sendMessage(String text) throws ClientException {
+	public void sendMessage(String text) throws Exception {
 		try {
 			var response = HttpClient.newHttpClient().send(createRequest(text), BodyHandlers.discarding());
 			var status = response.statusCode() / 100;
 			if (status != 2) switch (status) {
-				case 4 -> throw new ClientException("The provided credentials are invalid.");
-				default -> throw new ClientException("An error occurred while sending the message.");
+				case 4 -> throw new Exception("The provided credentials are invalid.");
+				default -> throw new Exception("An error occurred while sending the message.");
 			}
 		}
 		catch (InterruptedException|IOException e) {
-			throw new ClientException(e);
+			throw new Exception(e);
 		}
 	}
 
@@ -80,11 +81,11 @@ public final class Client {
 	@SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
 	public CompletableFuture<Void> sendMessageAsync(String text) {
 		return HttpClient.newHttpClient().sendAsync(createRequest(text), BodyHandlers.discarding()).handle((response, e) -> {
-			if (e != null) throw new RuntimeException(new ClientException(e));
+			if (e != null) throw new RuntimeException(new Exception(e));
 			return switch (response.statusCode() / 100) {
 				case 2 -> null;
-				case 4 -> throw new RuntimeException(new ClientException("The provided credentials are invalid."));
-				default -> throw new RuntimeException(new ClientException("An error occurred while sending the message."));
+				case 4 -> throw new RuntimeException(new Exception("The provided credentials are invalid."));
+				default -> throw new RuntimeException(new Exception("An error occurred while sending the message."));
 			};
 		});
 	}
@@ -109,5 +110,32 @@ public final class Client {
 			.collect(Collectors.joining("&")));
 
 		return HttpRequest.newBuilder(url).GET().build();
+	}
+
+	/**
+	 * An exception caused by an error in a {@link Client} request.
+	 */
+	public static class Exception extends java.lang.Exception {
+
+		/**
+		 * The serialization version number.
+		 */
+		@Serial private static final long serialVersionUID = 1L;
+
+		/**
+		 * Creates a new client exception.
+		 * @param message The error message.
+		 */
+		public Exception(String message) {
+			super(message);
+		}
+
+		/**
+		 * Creates a new client exception.
+		 * @param cause The original cause of the error.
+		 */
+		public Exception(Throwable cause) {
+			super(cause);
+		}
 	}
 }
