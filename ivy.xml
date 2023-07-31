@@ -3,7 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="https://ant.apache.org/ivy/schemas/ivy.xsd">
 
-	<info organisation="io.belin" module="free-mobile" revision="1.0.0">
+	<info organisation="io.belin" module="free-mobile" revision="2.0.0">
 		<description homepage="https://docs.belin.io/free-mobile.java">
 			Send SMS messages to your Free Mobile account.
 		</description>
