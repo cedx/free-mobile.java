@@ -1,1 +1,1 @@
-typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"io.belin.free_mobile","l":"Client"},{"p":"io.belin.free_mobile","l":"ClientException"}];updateSearchResults();
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"io.belin.free_mobile","l":"Client"},{"p":"io.belin.free_mobile","l":"Client.Exception"}];updateSearchResults();
