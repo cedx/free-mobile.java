@@ -1,5 +1,4 @@
 import io.belin.free_mobile.Client;
-import io.belin.free_mobile.ClientException;
 
 /**
  * Sends an SMS notification.
@@ -18,7 +17,7 @@ class SendMessage {
 			client.sendMessage("Hello World from Java!");
 			System.out.println("The message was sent successfully.");
 		}
-		catch (ClientException e) {
+		catch (Client.Exception e) {
 			System.err.println("An error occurred: " + e.getMessage());
 		}
 	}
