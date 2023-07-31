@@ -48,8 +48,8 @@ public final class Client {
 	 * @param baseUrl The base URL of the remote API endpoint.
 	 */
 	public Client(String account, String apiKey, URI baseUrl) {
-		this.account = account;
-		this.apiKey = apiKey;
+		this.account = Objects.requireNonNull(account);
+		this.apiKey = Objects.requireNonNull(apiKey);
 		this.baseUrl = Objects.requireNonNullElse(baseUrl, URI.create("https://smsapi.free-mobile.fr/"));
 	}
 
@@ -95,7 +95,7 @@ public final class Client {
 	 * @return The newly created HTTP request.
 	 */
 	private HttpRequest createRequest(String text) {
-		var strippedText = text.strip();
+		var strippedText = Objects.requireNonNull(text).strip();
 
 		var query = new HashMap<String, String>();
 		query.put("msg", strippedText.substring(0, Math.min(160, strippedText.length())));
