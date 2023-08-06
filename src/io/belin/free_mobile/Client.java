@@ -2,15 +2,15 @@ package io.belin.free_mobile;
 
 import java.io.IOException;
 import java.io.Serial;
-import java.net.URI;
-import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.net.URI;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.util.concurrent.CompletableFuture;
 import java.util.HashMap;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 /**
