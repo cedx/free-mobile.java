@@ -1,7 +1,7 @@
 # Free Mobile for Java
 ![Java](https://badgen.net/badge/java/%3E%3D17.0.0/green) ![Version](https://badgen.net/badge/project/v2.0.0/blue) ![License](https://badgen.net/badge/license/MIT/blue) ![Coverage](https://badgen.net/codecov/c/github/cedx/free-mobile.java)
 
-Send SMS messages to your [Free Mobile](https://mobile.free.fr) account, in [Java](https://www.java.com).
+Send SMS messages to your [Free Mobile](https://mobile.free.fr) account, in [Java](https://www.oracle.com/java).
 
 ## Documentation
 - [User guide](https://docs.belin.io/free-mobile.java)

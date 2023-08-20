@@ -16,7 +16,7 @@ This will give you an identification key allowing access to the [Free Mobile](ht
 Download the latest JAR file of **Free Mobile for Java** from the GitHub releases:  
 https://github.com/cedx/free-mobile.java/releases/latest
 
-Add it to your class path. Now in your [Java](https://www.java.com) code, you can use:
+Add it to your class path. Now in your [Java](https://www.oracle.com/java) code, you can use:
 
 ```java
 import io.belin.free_mobile.*;
