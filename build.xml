@@ -1,12 +1,15 @@
 <?xml version="1.0"?>
-<project name="free_mobile" default="build" xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="free_mobile" default="build" xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:unless="ant:unless">
+	<property environment="env"/>
 	<xmlproperty file="ivy.xml"/>
+
 	<property name="project.title" value="Free Mobile for Java"/>
 	<property name="project.version" value="${ivy-module.info(revision)}"/>
 	<property name="vendor.id" value="io.belin"/>
 	<property name="vendor.name" value="Cédric Belin"/>
 
 	<description>${project.title} ${project.version}</description>
+	<ivy:settings file="etc/ivy.xml" unless:true="${env.GITHUB_ACTIONS}"/>
 
 	<path id="project.classpath">
 		<pathelement location="bin"/>
@@ -16,6 +19,7 @@
 	<target name="build" description="Builds the project.">
 		<mkdir dir="bin"/>
 		<javac srcDir="src" destDir="bin" classPathRef="project.classpath" includeAntRuntime="false">
+			<compilerarg value="-proc:full"/>
 			<compilerarg value="-Xlint:all,-path,-processing"/>
 		</javac>
 	</target>
@@ -84,6 +88,7 @@
 
 	<target name="test" description="Runs the test suite." depends="build">
 		<javac srcDir="test" destDir="bin" classPathRef="project.classpath" includeAntRuntime="false">
+			<compilerarg value="-proc:full"/>
 			<compilerarg value="-Xlint:all,-path,-processing"/>
 		</javac>
 		<taskdef name="coverage" className="org.jacoco.ant.CoverageTask" classPathRef="project.classpath"/>
