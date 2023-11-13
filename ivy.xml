@@ -12,7 +12,7 @@
 	<dependencies>
 		<dependency org="net.sourceforge.pmd" name="pmd-ant" rev="7.+"/>
 		<dependency org="net.sourceforge.pmd" name="pmd-cli" rev="7.+"/>
-		<dependency org="org.jacoco" name="org.jacoco.agent" rev="0.8.10"/>
+		<dependency org="org.jacoco" name="org.jacoco.agent" rev="0.8.+"/>
 		<dependency org="org.jacoco" name="org.jacoco.ant" rev="0.8.+"/>
 		<dependency org="org.jacoco" name="org.jacoco.cli" rev="0.8.+"/>
 		<dependency org="org.junit.jupiter" name="junit-jupiter" rev="5.+"/>
