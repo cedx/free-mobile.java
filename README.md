@@ -12,4 +12,4 @@ Send SMS messages to your [Free Mobile](https://mobile.free.fr) account, in [Jav
 - [Submit an issue](https://github.com/cedx/free-mobile.java/issues)
 
 ## License
-[Free Mobile for Java](https://cedx.github.io/free-mobile.java) is distributed under the MIT License.
+[Free Mobile for Java](https://github.com/cedx/free-mobile.java) is distributed under the MIT License.
