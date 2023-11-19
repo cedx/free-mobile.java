@@ -48,10 +48,11 @@ public final class Client {
 	 * @param apiKey The Free Mobile API key.
 	 * @param baseUrl The base URL of the remote API endpoint.
 	 */
-	public Client(String account, String apiKey, URI baseUrl) {
+	public Client(String account, String apiKey, String baseUrl) {
+		var url = Objects.requireNonNullElse(baseUrl, "https://smsapi.free-mobile.fr");
 		this.account = Objects.requireNonNull(account);
 		this.apiKey = Objects.requireNonNull(apiKey);
-		this.baseUrl = Objects.requireNonNullElse(baseUrl, URI.create("https://smsapi.free-mobile.fr/"));
+		this.baseUrl = URI.create(url.endsWith("/") ? url : url + "/");
 	}
 
 	/**
