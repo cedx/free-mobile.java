@@ -95,6 +95,9 @@
 		<coverage destFile="var/jacoco.exec" append="false" includes="${vendor.id}.*">
 			<java className="org.junit.platform.console.ConsoleLauncher" classPathRef="project.classpath" failOnError="true" fork="true">
 				<arg line="--select-package=${vendor.id}.${ant.project.name}"/>
+				<assertions>
+					<enable/>
+				</assertions>
 			</java>
 		</coverage>
 		<delete includeEmptyDirs="true">
