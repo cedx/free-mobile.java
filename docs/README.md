@@ -49,4 +49,3 @@ The `Client.sendMessage()` method throws a `Client.Exception` if any error occur
 ## See also
 - [API reference](api/)
 - [GitHub releases](https://github.com/cedx/free-mobile.java/releases)
-- [Code coverage](https://app.codecov.io/gh/cedx/free-mobile.java)
