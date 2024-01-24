@@ -16,14 +16,14 @@ final class ClientTest {
 	@Test
 	@DisplayName("sendMessage(): should throw a `Client.Exception` if a network error occurred.")
 	void networkError() {
-		var client = new Client("anonymous", "secret", URI.create("http://localhost:10000/"));
+		var client = new Client("anonymous", "secret", "http://localhost:10000");
 		assertThrows(Client.Exception.class, () -> client.sendMessage("Hello World!"));
 	}
 
 	@Test
 	@DisplayName("sendMessageAsync(): should complete exceptionnaly with a `Client.Exception` if a network error occurred.")
 	void networkErrorAsync() {
-		var client = new Client("anonymous", "secret", URI.create("http://localhost:10000/"));
+		var client = new Client("anonymous", "secret","http://localhost:10000");
 		assertThrows(ExecutionException.class, () -> client.sendMessageAsync("Hello World!").get());
 	}
 
