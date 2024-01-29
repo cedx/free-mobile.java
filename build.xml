@@ -91,20 +91,11 @@
 			<compilerarg value="-proc:full"/>
 			<compilerarg value="-Xlint:all,-path,-processing"/>
 		</javac>
-		<taskdef name="coverage" className="org.jacoco.ant.CoverageTask" classPathRef="project.classpath"/>
-		<coverage destFile="var/jacoco.exec" append="false" includes="${vendor.id}.*">
-			<java className="org.junit.platform.console.ConsoleLauncher" classPathRef="project.classpath" failOnError="true" fork="true">
-				<arg line="--select-package=${vendor.id}.${ant.project.name}"/>
-				<assertions>
-					<enable/>
-				</assertions>
-			</java>
-		</coverage>
-		<delete includeEmptyDirs="true">
-			<fileset dir="bin" includes="*.jar,**/*Test.class"/>
-		</delete>
-		<java className="org.jacoco.cli.internal.Main" classPathRef="project.classpath" failOnError="true" fork="true">
-			<arg line="report var/jacoco.exec --classfiles=bin --sourcefiles=src --xml=var/coverage.xml"/>
+		<java className="org.junit.platform.console.ConsoleLauncher" classPathRef="project.classpath" failOnError="true" fork="true">
+			<arg line="--select-package=${vendor.id}.${ant.project.name}"/>
+			<assertions>
+				<enable/>
+			</assertions>
 		</java>
 	</target>
 
