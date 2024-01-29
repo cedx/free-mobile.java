@@ -56,13 +56,13 @@ public final class Client {
 	}
 
 	/**
-	 * Sends a SMS message to the underlying account.
+	 * Sends an SMS message to the underlying account.
 	 * @param text The message text.
 	 * @throws Exception An error occurred while sending the message.
 	 */
 	public void sendMessage(String text) throws Exception {
-		try {
-			var response = HttpClient.newHttpClient().send(createRequest(text), BodyHandlers.discarding());
+		try (var client = HttpClient.newHttpClient()) {
+			var response = client.send(createRequest(text), BodyHandlers.discarding());
 			var status = response.statusCode() / 100;
 			if (status != 2) switch (status) {
 				case 4 -> throw new Exception("The provided credentials are invalid.");
@@ -75,20 +75,22 @@ public final class Client {
 	}
 
 	/**
-	 * Asynchronously sends a SMS message to the underlying account.
+	 * Asynchronously sends an SMS message to the underlying account.
 	 * @param text The message text.
 	 * @return Completes when the message has been sent.
 	 */
 	@SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
 	public CompletableFuture<Void> sendMessageAsync(String text) {
-		return HttpClient.newHttpClient().sendAsync(createRequest(text), BodyHandlers.discarding()).handle((response, e) -> {
-			if (e != null) throw new RuntimeException(new Exception(e));
-			return switch (response.statusCode() / 100) {
-				case 2 -> null;
-				case 4 -> throw new RuntimeException(new Exception("The provided credentials are invalid."));
-				default -> throw new RuntimeException(new Exception("An error occurred while sending the message."));
-			};
-		});
+		try (var client = HttpClient.newHttpClient()) {
+			return client.sendAsync(createRequest(text), BodyHandlers.discarding()).handle((response, e) -> {
+				if (e != null) throw new RuntimeException(new Exception(e));
+				return switch (response.statusCode() / 100) {
+					case 2 -> null;
+					case 4 -> throw new RuntimeException(new Exception("The provided credentials are invalid."));
+					default -> throw new RuntimeException(new Exception("An error occurred while sending the message."));
+				};
+			});
+		}
 	}
 
 	/**
