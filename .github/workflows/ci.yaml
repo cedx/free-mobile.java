@@ -29,3 +29,29 @@ jobs:
           FREEMOBILE_ACCOUNT: ${{secrets.FREEMOBILE_ACCOUNT}}
           FREEMOBILE_API_KEY: ${{secrets.FREEMOBILE_API_KEY}}
         run: ant -emacs test
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch sources
+        uses: actions/checkout@v4
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - name: Set up Ant
+        uses: cedx/setup-ant@v2
+        with:
+          optional-tasks: true
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          cache: pip
+          python-version: 3.12
+      - name: Install dependencies
+        run: pip install --requirement=etc/requirements.txt
+      - name: Deploy documentation
+        run: |
+          ant doc
+          mkdocs gh-deploy --config-file=etc/mkdocs.yaml --force
