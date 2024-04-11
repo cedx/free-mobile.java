@@ -1,3 +1,0 @@
-- [API reference](api/)
-- [Changelog](changelog.md)
-- [License](license.md)

@@ -4,7 +4,10 @@ Send SMS messages to your [Free Mobile](https://mobile.free.fr) device via any i
 For example, you can configure a control panel or storage connected to your home network to send a notification to your mobile phone when an event occurs.
 
 ## Quick start
-> SMS notifications require an API key. If you are not already registered, [sign up for a Free Mobile account](https://mobile.free.fr/subscribe).
+
+!!! note
+    SMS notifications require an API key. If you are not already registered,
+    [sign up for a Free Mobile account](https://mobile.free.fr/subscribe).
 
 ### Get an API key
 You first need to enable the **SMS notifications** in [your subscriber account](https://mobile.free.fr/account).
@@ -14,7 +17,7 @@ This will give you an identification key allowing access to the [Free Mobile](ht
 
 ### Get the library
 Download the latest JAR file of **Free Mobile for Java** from the GitHub releases:  
-https://github.com/cedx/free-mobile.java/releases/latest
+[https://github.com/cedx/free-mobile.java/releases/latest](https://github.com/cedx/free-mobile.java/releases/latest)
 
 Add it to your class path. Now in your [Java](https://www.oracle.com/java) code, you can use:
 
@@ -44,8 +47,6 @@ class Program {
 
 The `Client.sendMessage()` method throws a `Client.Exception` if any error occurred while sending the message.
 
-> The text of the messages will be automatically truncated to **160** characters: you can't send multipart messages using this library.
-
-## See also
-- [API reference](api/)
-- [GitHub releases](https://github.com/cedx/free-mobile.java/releases)
+!!! warning
+    The text of the messages will be automatically truncated to **160** characters:  
+    you can't send multipart messages using this library.

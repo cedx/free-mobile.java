@@ -9,14 +9,13 @@
 	<property name="vendor.name" value="Cédric Belin"/>
 
 	<description>${project.title} ${project.version}</description>
-	<ivy:settings file="etc/ivy.xml" unless:true="${env.GITHUB_ACTIONS}"/>
 
 	<path id="project.classpath">
 		<pathelement location="bin"/>
 		<fileset dir="lib" excludes="*-javadoc.jar,*-sources.jar" includes="*.jar"/>
 	</path>
 
-	<target name="build" description="Builds the project.">
+	<target name="build" description="Builds the project">
 		<mkdir dir="bin"/>
 		<javac srcDir="src" destDir="bin" classPathRef="project.classpath" includeAntRuntime="false">
 			<compilerarg value="-proc:full"/>
@@ -24,7 +23,7 @@
 		</javac>
 	</target>
 
-	<target name="clean" description="Deletes all generated files.">
+	<target name="clean" description="Deletes all generated files">
 		<delete dir="bin"/>
 		<delete includeEmptyDirs="true">
 			<fileset dir="var" excludes=".gitkeep"/>
@@ -44,15 +43,14 @@
 		</jar>
 	</target>
 
-	<target name="doc" description="Builds the documentation.">
+	<target name="doc" description="Builds the documentation">
 		<copy file="CHANGELOG.md" toFile="docs/changelog.md"/>
 		<copy file="LICENSE.md" toFile="docs/license.md"/>
 		<delete dir="docs/api"/>
 		<javadoc sourcePath="src" destDir="docs/api" packageNames="${vendor.id}.*" windowTitle="${project.title}"/>
-		<copy file="docs/favicon.ico" toDir="docs/api"/>
 	</target>
 
-	<target name="install" description="Installs the project dependencies.">
+	<target name="install" description="Installs the project dependencies">
 		<mkdir dir="lib"/>
 		<ivy:retrieve log="download-only" sync="true"/>
 	</target>
@@ -68,7 +66,7 @@
 		</java>
 	</target>
 
-	<target name="outdated" description="Checks whether installed packages are out of date.">
+	<target name="outdated" description="Checks whether installed packages are out of date">
 		<ivy:checkdepsupdate log="quiet"/>
 	</target>
 
@@ -81,9 +79,15 @@
 		</exec>
 	</target>
 
-	<target name="run" description="Runs a main class from the &quot;example&quot; folder.">
+	<target name="run" description="Runs a main class from the &quot;example&quot; folder">
 		<fail message="You must specify an example to run using -Dclass=&lt;example&gt;." unless="class"/>
 		<java sourceFile="example/${class}.java" classPathRef="project.classpath" failOnError="true" fork="true"/>
+	</target>
+
+	<target name="serve" description="Starts the development server" depends="doc">
+		<exec executable="mkdocs">
+			<arg line="serve --config-file=etc/mkdocs.yaml"/>
+		</exec>
 	</target>
 
 	<target name="test" description="Runs the test suite." depends="build">
@@ -99,7 +103,7 @@
 		</java>
 	</target>
 
-	<target name="version" description="Updates the version number in the sources.">
+	<target name="version" description="Updates the version number in the sources">
 		<replaceregexp file="README.md" match="project/v\d+(\.\d+){2}" replace="project/v${project.version}"/>
 	</target>
 </project>

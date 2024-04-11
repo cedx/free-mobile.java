@@ -1,5 +1,6 @@
-name: main
+name: continuous-integration
 on: push
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -18,9 +19,9 @@ jobs:
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
-          path: lib
-          key: java-${{runner.os}}-ivy-${{hashFiles('ivy.xml')}}
-          restore-keys: java-${{runner.os}}-ivy-
+          path: ~/.ivy2/cache
+          key: ${{runner.os}}-ivy-${{hashFiles('**/ivy.xml')}}
+          restore-keys: ${{runner.os}}-ivy-
       - name: Install dependencies
         run: ant install
       - name: Run tests
