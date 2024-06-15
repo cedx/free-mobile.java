@@ -4,8 +4,8 @@
 Send SMS messages to your [Free Mobile](https://mobile.free.fr) device, in [Java](https://www.oracle.com/java).
 
 ## Documentation
-- [User guide](https://docs.belin.io/free-mobile.java)
-- [API reference](https://docs.belin.io/free-mobile.java/api)
+- [User guide](https://github.com/cedx/free-mobile.java/wiki)
+- [Examples](https://github.com/cedx/free-mobile.java/tree/main/example)
 
 ## Development
 - [Git repository](https://github.com/cedx/free-mobile.java)

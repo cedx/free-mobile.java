@@ -2,8 +2,7 @@
 /.idea/
 /*.iml
 /bin/
-/docs/api/
 /etc/http-client.private.env.json
 /lib/
 /var/
-/www/
+/wiki/

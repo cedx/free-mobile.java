@@ -43,13 +43,6 @@
 		</jar>
 	</target>
 
-	<target name="doc" description="Builds the documentation">
-		<copy file="CHANGELOG.md" toFile="docs/changelog.md"/>
-		<copy file="LICENSE.md" toFile="docs/license.md"/>
-		<delete dir="docs/api"/>
-		<javadoc sourcePath="src" destDir="docs/api" packageNames="${vendor.id}.*" windowTitle="${project.title}"/>
-	</target>
-
 	<target name="install" description="Installs the project dependencies">
 		<mkdir dir="lib"/>
 		<ivy:retrieve log="download-only" sync="true"/>
@@ -82,12 +75,6 @@
 	<target name="run" description="Runs a main class from the &quot;example&quot; folder">
 		<fail message="You must specify an example to run using -Dclass=&lt;example&gt;." unless="class"/>
 		<java sourceFile="example/${class}.java" classPathRef="project.classpath" failOnError="true" fork="true"/>
-	</target>
-
-	<target name="serve" description="Starts the development server" depends="doc">
-		<exec executable="mkdocs">
-			<arg line="serve --config-file=etc/mkdocs.yaml"/>
-		</exec>
 	</target>
 
 	<target name="test" description="Runs the test suite." depends="build">
