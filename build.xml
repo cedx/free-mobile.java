@@ -72,7 +72,7 @@
 		</exec>
 	</target>
 
-	<target name="run" description="Runs a main class from the &quot;example&quot; folder">
+	<target name="run" description="Runs a main class from the &quot;example&quot; folder" depends="build">
 		<fail message="You must specify an example to run using -Dclass=&lt;example&gt;." unless="class"/>
 		<java sourceFile="example/${class}.java" classPathRef="project.classpath" failOnError="true" fork="true"/>
 	</target>
