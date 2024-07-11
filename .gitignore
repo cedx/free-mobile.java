@@ -1,8 +1,5 @@
 /**/.DS_Store
-/.idea/
-/*.iml
 /bin/
-/etc/http-client.private.env.json
 /lib/
 /var/
 /wiki/
