@@ -30,7 +30,7 @@
 		</delete>
 	</target>
 
-	<target name="dist" description="Packages the project." depends="clean,build,version">
+	<target name="dist" description="Packages the project" depends="clean,build,version">
 		<mkdir dir="bin/META-INF"/>
 		<copy file="LICENSE.md" toDir="bin/META-INF"/>
 		<jar baseDir="bin" destFile="bin/${ant.project.name}.jar">
@@ -63,7 +63,7 @@
 		<ivy:checkdepsupdate log="quiet"/>
 	</target>
 
-	<target name="publish" description="Publishes the package." depends="dist">
+	<target name="publish" description="Publishes the package" depends="dist">
 		<exec executable="git">
 			<arg line="tag v${project.version}"/>
 		</exec>
@@ -77,7 +77,7 @@
 		<java sourceFile="example/${class}.java" classPathRef="project.classpath" failOnError="true" fork="true"/>
 	</target>
 
-	<target name="test" description="Runs the test suite." depends="build">
+	<target name="test" description="Runs the test suite" depends="build">
 		<javac srcDir="test" destDir="bin" classPathRef="project.classpath" includeAntRuntime="false">
 			<compilerarg value="-proc:full"/>
 			<compilerarg value="-Xlint:all,-path,-processing"/>
