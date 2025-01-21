@@ -30,7 +30,7 @@
 		</delete>
 	</target>
 
-	<target name="dist" description="Packages the project" depends="clean,build,version">
+	<target name="dist" description="Packages the project" depends="clean,version,build">
 		<mkdir dir="bin/META-INF"/>
 		<copy file="LICENSE.md" toDir="bin/META-INF"/>
 		<jar baseDir="bin" destFile="bin/${ant.project.name}.jar">
