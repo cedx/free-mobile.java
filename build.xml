@@ -1,4 +1,3 @@
-<?xml version="1.0"?>
 <project name="free_mobile" default="build" xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:unless="ant:unless">
 	<property environment="env"/>
 	<xmlproperty file="ivy.xml"/>
